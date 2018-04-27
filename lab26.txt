@@ -1,0 +1,275 @@
+/******************************************************************************
+ * AUTHOR     : Chris Burrell, Nick Terrazas
+ * LAB        : #26 Enumerated Types
+ * CLASS      : CS1A
+ * SECTION    : MW: 8am
+ * DUE DATE   : 4/30/18
+ *****************************************************************************/
+
+#include "myheader.h"
+
+/******************************************************************************
+ * Lab 26 - Enumerated Types
+ * ----------------------------------------------------------------------------
+ * This program will accept in input from the user, and convert it to a valid
+ * 		season. It will error check that the character input is within valid
+ * 		parameters. It will then give a recommended fruit based on the season
+ * 		that was input.
+ * ----------------------------------------------------------------------------
+ * INPUT:
+ * 		season		: the character representing the season
+ *
+ * OUTPUT:
+ * 		seasonStr	: a string representing the season
+ * 		fruitStr	: a string representing the type of fruit
+ *****************************************************************************/
+
+int main()
+{
+
+	/**************************************************************************
+	 * CONSTANTS
+	 * ------------------------------------------------------------------------
+	 * OUTPUT - USED FOR CLASS HEADING
+	 *-------------------------------------------------------------------------
+	 *PROGRAMMER[] : Programmer's Name
+	 *CLASS[]      : Student's Course
+	 *SECTION[]    : Class Days and Times
+	 *LAB_NUM      : Lab Number (specific to this Lab / Assignment)
+	 *LAB_NAME[]   : Title of the Lab / Assignment
+	 *************************************************************************/
+
+
+	const char PROGRAMMER[] = "Chris Burrell, Nick Terrazas";
+	const char CLASS[]      = "CS1A";
+	const char 	SECTION[]   = "MW: 8:00 am";
+	const int LAB_NUM       = 26;
+	const char LAB_NAME[]   = "Enumerated Types";
+
+
+
+	//OUTPUT the class heading
+	cout << left;
+	cout << "***********************************************************\n";
+	cout << "*  PROGRAMMED BY : " << PROGRAMMER << endl;
+	cout << "*  "     << setw(14) << "CLASS"    << ": " << CLASS    << endl;
+	cout << "*  "     << setw(14) << "SECTION"  << ": " << SECTION  << endl;
+	cout << "*  LAB #"<< setw(9) << LAB_NUM    << ": "<< LAB_NAME << endl;
+	cout << "************************************************************\n\n";
+	cout << right;
+
+
+
+	//variables
+	char    season;			//IN, CALC  - the character representing the season
+	Seasons currentSeas; 	//CALC      - an enum type representing the season
+	string seasonStr;		//CALC, OUT - a string representing the season
+	string fruitStr;		//CALC, OUT - a string representing the type of
+							//            fruit
+
+	season = GetSeason();
+
+	// Will execute the loop until an 'X' is entered
+	while(season != 'X')
+	{
+		// Will execute the selection statements if an 'X' is not entered
+		if(season != 'X')
+		{
+			// will convert the season char to the enum type
+			currentSeas = ConvertCharToSeason(season);
+			// will convert the enum type to a string
+			seasonStr = ConvertSeasonToString(currentSeas);
+			// find the recommended fruit based on the season
+			fruitStr =  ConvertSeasonToFruit(currentSeas);
+
+			cout << "\nFor " << seasonStr << ", you might want to try a "
+				 << fruitStr << ".\n\n";
+		}
+
+		season = GetSeason();
+	}
+
+	cout << "\n\nThank you for using the Fruit Selector.";
+
+
+	return 0;
+}
+
+
+
+functions + header :D
+=========================================================================================
+
+
+
+#1
+
+char GetSeason()
+{
+	// constant string that will output the fruit selector menu
+	const string  INPUT_MENU = "********************\n"
+							   "FRUIT SELECTOR\n"
+							   "********************\n"
+							   "(W) Winter\n"
+							   "(S) Spring\n"
+							   "(U) Summer\n"
+							   "(F) Fall\n"
+							   "(X) Exit\n"
+							   "What season is it? ";
+	char season;  //IN, CALC - a character used for representing the season
+
+	// do while used for error checking
+	do
+	{
+		cout << INPUT_MENU;
+		cin.get(season);
+		cin.ignore(1000, '\n');
+
+		season = toupper(season);
+		// will output the error message if condition is true
+		if(!(season == 'W' || season == 'S' || season == 'U' || season == 'F' ||
+		   season == 'X'))
+		{
+			cout << "\n*** INVALID INPUT - Please input a W, S, U, F or X "
+					"***\n\n";
+		}
+	// will loop while the condition is true
+	}while(!(season == 'W' || season == 'S' || season == 'U' || season == 'F' ||
+		   season == 'X'));
+
+
+	return season;
+}
+
+
+
+#2
+
+Seasons ConvertCharToSeason(char seasonChar)  //CALC - the character
+											  //       representing the season
+{
+	Seasons seasConvert;          //IN - the season that the season char will
+								  // 	 be converted to
+
+	// switch statement that will convert the season character to the season
+	switch(seasonChar)
+	{
+		case 'W' : seasConvert = WINTER; ;
+					break;
+		case 'S' : seasConvert = SPRING;
+					break;
+		case 'U' : seasConvert = SUMMER;
+					break;
+		case 'F' : seasConvert = FALL;
+	}
+
+	return seasConvert;
+}
+
+
+
+
+#3
+
+string ConvertSeasonToString(Seasons currentSeas) // IN - the Seasons data type
+												  //      that is being input
+{
+	string seasonStr;
+
+	//Checks the contents of the enum type "Seasons" based on the numerical
+	//value of its location
+	switch(currentSeas)
+		{
+			case 0 : seasonStr = "winter";
+						break;
+			case 1 : seasonStr = "spring";
+						break;
+			case 2 : seasonStr = "summer";
+						break;
+			case 3 : seasonStr = "fall";
+		}
+	return seasonStr;
+}
+
+
+
+
+
+#4
+
+string ConvertSeasonToFruit(Seasons currentSeas)  // IN - the Seasons data type
+												  //      that is being input
+{
+	string fruitStr;
+
+	//Checks the contents of the enum type "Seasons" based on the numerical
+	//value of its location and assigns a fruit to the equivalent season
+	switch(currentSeas)
+		{
+			case 0 : fruitStr = "Kishu Mini Mandarin";
+						break;
+			case 1 : fruitStr = "Blood Orange";
+						break;
+			case 2 : fruitStr = "Lane Navel Orange";
+						break;
+			case 3 : fruitStr = "Star Ruby Red Grapefruit";
+		}
+	return fruitStr;
+}
+
+
+
+
+header
+
+#ifndef MYHEADER_H_
+#define MYHEADER_H_
+
+#include <iostream>
+#include <iomanip>
+#include <string>
+using namespace std;
+
+enum Seasons
+{
+	WINTER,
+	SPRING,
+	SUMMER,
+	FALL,
+};
+
+/***************************************************************************
+ * GetSeason
+ *      Displays the menu for the user and allows them to enter a character
+ * 			representing one of the seasons
+ *      ==> returns sum
+ ***************************************************************************/
+char GetSeason();
+
+/***************************************************************************
+ * ConvertCharToSeason
+ *      Converts the character representing the season to the actual season
+ *      ==> returns seasConvert
+ ***************************************************************************/
+Seasons ConvertCharToSeason(char seasonChar); //CALC - the character
+											  //       representing the season
+
+/***************************************************************************
+ * ConvertSeasonToString
+ *      Converts the season that is input from the data type "Seasons" to
+ *      	a string
+ *      ==> returns seasonStr - The season is now a string
+ ***************************************************************************/
+string ConvertSeasonToString(Seasons currentSeas);// IN - the Seasons data type
+												  //      that is being input
+
+/***************************************************************************
+ * ConvertSeasonToFruit
+ *      Converts the season that is input from the data type "Seasons" to
+ *      	a string
+ *      ==> returns fruitStr - The current fruit is now a string
+ ***************************************************************************/
+string ConvertSeasonToFruit(Seasons currentSeas); // IN - the Seasons data type
+												  //      that is being input
+
+#endif
